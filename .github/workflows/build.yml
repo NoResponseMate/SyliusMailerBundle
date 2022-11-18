@@ -95,6 +95,15 @@ jobs:
                     vendor/bin/phpunit src/Bundle/tests/Functional/ServiceRemovalTest.php --group symfony-mailer
 
             -
+                name: Test bundle (with disabled SymfonyMailer)
+                run: |
+                    rm -rf src/Bundle/test/var/cache
+                    composer remove symfony/swiftmailer-bundle --no-scripts
+                    composer require symfony/mailer --no-scripts
+                    (cd src/Bundle/test && APP_ENV=test_disabled_symfony_mailer bin/console lint:container)
+                    vendor/bin/phpunit src/Bundle/tests/Functional/ServiceRemovalTest.php --group no-mailer
+
+            -
                 name: Run lint container (with no mailers)
                 run: |
                     rm -rf src/Bundle/test/var/cache

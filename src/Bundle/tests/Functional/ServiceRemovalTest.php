@@ -44,4 +44,19 @@ final class ServiceRemovalTest extends KernelTestCase
         $this->assertTrue($container->has('sylius.email_sender.adapter.swiftmailer'));
         $this->assertFalse($container->has('sylius.email_sender.adapter.symfony_mailer'));
     }
+
+    /**
+     * @test
+     *
+     * @group no-mailer
+     */
+    public function it_removes_symfony_mailer_when_mailer_is_disabled(): void
+    {
+        $kernel = self::bootKernel(['environment' => 'test_disabled_symfony_mailer']);
+        $container = $kernel->getContainer();
+
+        $this->assertFalse($container->has('mailer.mailer'));
+        $this->assertFalse($container->has('sylius.email_sender.adapter.swiftmailer'));
+        $this->assertFalse($container->has('sylius.email_sender.adapter.symfony_mailer'));
+    }
 }
